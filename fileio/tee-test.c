@@ -17,21 +17,18 @@ main(int argc, char *argv[])
     char buf[BUF_SIZE];
     char *output = NULL;
 
-    if (argc < 2) {
-        usage(argv[0]);
-        exit(EXIT_FAILURE);
-    }
+    if (argc < 2) usage(argv[0]);
 
     for (i = 1; i < argc; ++i) {
         if (strcmp(argv[i], "-a") == 0)
             append = 1;
         else if (output == NULL)
             output = argv[i];
-        else {
+        else
             usage(argv[0]);
-            exit(EXIT_FAILURE);
-        }
     }
+
+    if (output == NULL) usage(argv[0]);
 
     openFlags = O_CREAT | O_WRONLY;
     if (append)
@@ -64,4 +61,5 @@ main(int argc, char *argv[])
 
 void usage(char *program) {
     printf("Usage: %s [-a] FILE\n", program);
+    exit(EXIT_FAILURE);
 }
