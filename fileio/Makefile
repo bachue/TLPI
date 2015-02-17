@@ -1,7 +1,7 @@
 include ../Makefile.inc
 
 GEN_EXE = atomic_append bad_exclusive_open copy \
-	multi_descriptors seek_io t_readv t_truncate read-test open-test tee-test copy-hole read-by-two-descriptors truncate t_readv_writev
+	multi_descriptors seek_io t_readv t_truncate read-test open-test tee-test copy-hole read-by-two-descriptors truncate t_readv_writev t_off_t
 
 LINUX_EXE = large_file
 
