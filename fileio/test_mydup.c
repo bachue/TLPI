@@ -27,6 +27,19 @@ main(int argc, char *argv[])
         if (write(fd, "abc", 3) != 3 || write(fd2, "def", 3) != 3)
             errExit("failed to write file");
         fprintf(stderr, "%s\n", "ghi");
+    } else if (strcmp(argv[2], "3") == 0) {
+        int fd3;
+        fd2 = mydup(fd);
+        fd3 = open(argv[1], O_WRONLY);
+        if (fd2 == -1) errExit("mydup failed");
+        if (fd3 == -1) errExit("opening file secondly %s", argv[1]);
+
+        if (write(fd, "Hello,", 6) == -1 ||
+            write(fd2, "world", 5) == -1 ||
+            lseek(fd2, 0, SEEK_SET) == -1 ||
+            write(fd, "Hello,", 6) == -1 ||
+            write(fd3, "Gidday", 6) == -1)
+            errExit("failed to execute test case");
     } else {
         fatal("Unrealized case");
     }
