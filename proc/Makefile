@@ -1,7 +1,7 @@
 include ../Makefile.inc
 
 GEN_EXE = bad_longjmp display_env longjmp \
-      necho setjmp_vars setjmp_vars_opt t_getenv
+      necho setjmp_vars setjmp_vars_opt t_getenv longjmp-test
 
 LINUX_EXE = modify_env
 
@@ -11,7 +11,7 @@ all : ${EXE}
 
 allgen : ${GEN_EXE}
 
-clean : 
+clean :
 	${RM} ${EXE} *.o
 
 showall :
