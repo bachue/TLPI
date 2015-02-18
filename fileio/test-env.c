@@ -8,6 +8,7 @@ void test3(void);
 void test4(void);
 void test5(void);
 void test6(void);
+void test7(void);
 
 int main(int argc, char  *argv[]) {
     if (argc != 2 || strcmp(argv[1], "--help") == 0) {
@@ -26,6 +27,8 @@ int main(int argc, char  *argv[]) {
         test5();
     else if (strcmp(argv[1], "6") == 0)
         test6();
+    else if (strcmp(argv[1], "7") == 0)
+        test7();
     else
         usageErr("%s case\n", argv[0]);
 
@@ -66,4 +69,8 @@ void test6() {
     strcpy(value, "abc");
     setenv(name, value, 1);
     strcpy(value, "def");
+}
+
+void test7() {
+    clearenv();
 }
