@@ -2,7 +2,7 @@ include ../Makefile.inc
 
 GEN_EXE = t_statvfs
 
-LINUX_EXE = t_statfs t_mount t_umount
+LINUX_EXE = t_statfs t_mount t_umount test-1-byte-files
 
 EXE = ${GEN_EXE} ${LINUX_EXE} 
 
