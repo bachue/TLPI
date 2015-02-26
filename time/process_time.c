@@ -55,7 +55,7 @@ displayProcessTimes(const char *msg)
 int
 main(int argc, char *argv[])
 {
-    int numCalls, j;
+    long numCalls, j;
 
     printf("CLOCKS_PER_SEC=%ld  sysconf(_SC_CLK_TCK)=%ld\n\n",
             (long) CLOCKS_PER_SEC, sysconf(_SC_CLK_TCK));
@@ -65,7 +65,7 @@ main(int argc, char *argv[])
     /* Call getppid() a large number of times, so that
        some user and system CPU time are consumed */
 
-    numCalls = (argc > 1) ? getInt(argv[1], GN_GT_0, "num-calls") : 100000000;
+    numCalls = (argc > 1) ? getLong(argv[1], GN_GT_0, "num-calls") : 100000000;
     for (j = 0; j < numCalls; j++)
         (void) getppid();
 
