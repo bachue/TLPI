@@ -6,7 +6,7 @@ int main(int argc, char  *argv[]) {
     uid_t ruid, euid, suid;
 
     if (argc != 2 || (argc > 1 && strcmp(argv[1], "--help") == 0))
-        usageErr("%s file", argv[0]);
+        usageErr("%s file\n", argv[0]);
 
     path = argv[1];
 
