@@ -1,6 +1,6 @@
 include ../Makefile.inc
 
-GEN_EXE = t_chown t_stat t_umask t_utime t_utimes
+GEN_EXE = t_chown t_stat t_umask t_utime t_utimes test_stat_nanosecond
 
 LINUX_EXE = chiflag
 
