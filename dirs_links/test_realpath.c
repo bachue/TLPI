@@ -11,11 +11,13 @@ struct path_node {
 
 static void generate_path_nodes(struct path_node**, struct path_node**, char*);
 static void generate_path_nodes_via_cwd(struct path_node**, struct path_node**);
+static void dereference_path_nodes(struct path_node**, struct path_node**);
 static void create_path_node(struct path_node**, struct path_node**);
 static void free_path_nodes(struct path_node*);
+static void generate_path(char*, size_t, struct path_node*);
 
 int main(int argc, char  *argv[]) {
-    char *path;
+    char *path, buf[PATH_MAX + 1];
     struct path_node *head = NULL, *tail = NULL;
     if (argc != 2 || (argc > 1 && strcmp(argv[1], "--help") == 0))
         usageErr("%s file\n", argv[0]);
@@ -28,14 +30,9 @@ int main(int argc, char  *argv[]) {
 
     generate_path_nodes(&head, &tail, path);
 
-{
-    struct path_node *cur = head;
-    while (cur != NULL) {
-        printf("%s (%ld) -> ", cur->path, (long) strlen(cur->path));
-        cur = cur->next;
-    }
-    printf("EOF \n");
-}
+    generate_path(buf, PATH_MAX, head);
+    buf[PATH_MAX] = '\0';
+    printf("%s\n", buf);
 
     free_path_nodes(head);
     exit(EXIT_SUCCESS);
@@ -92,10 +89,15 @@ void generate_path_nodes(struct path_node **phead, struct path_node **ptail, cha
             strncpy(tail->path, path + i, j - i);
             tail->path[j - i] = '\0';
             i = j;
+            dereference_path_nodes(&head, &tail);
         }
     }
     *phead = head;
     *ptail = tail;
+}
+
+void dereference_path_nodes(struct path_node **phead, struct path_node **ptail) {
+
 }
 
 void create_path_node(struct path_node **phead, struct path_node **ptail) {
@@ -116,5 +118,14 @@ void free_path_nodes(struct path_node *head) {
         cur = head;
         head = head->next;
         free(cur);
+    }
+}
+
+void generate_path(char *buf, size_t size, struct path_node *head) {
+    struct path_node *cur = head;
+    while (cur != NULL) {
+        strncat(buf, "/", size);
+        strncat(buf, cur->path, size);
+        cur = cur->next;
     }
 }
