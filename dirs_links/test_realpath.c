@@ -60,35 +60,27 @@ void generate_path_nodes(struct path_node **phead, struct path_node **ptail, cha
             ;
     }
 
-    create_path_node(&head, &tail);
-
     while (path[i] != '\0') {
         switch (path[i]) {
         case '/':
-            if (path[i + 1] == '\0') {
-                i++;
-                break;
-            }
-            create_path_node(&head, &tail);
             for (i++; path[i] == '/'; i++)
                 ;
             break;
         case '.':
             if (path[i + 1] == '/' || path[i + 1] == '\0') {
-                for (i++; path[i] == '/'; i++)
-                    ;
+                i++;
                 break;
             } else if (path[i + 1] == '.' && (path[i + 2] == '/' || path[i + 2] == '\0')) {
-                tmp = tail->prev;
-                if (tmp != NULL) tmp = tmp->prev;
-                if (tail->prev != NULL) free(tail->prev);
-                if (tmp != NULL)
-                    tmp->next = tail;
-                else
-                    head = tail;
-                tail->prev = tmp;
-                for (i += 2; path[i] == '/'; i++)
-                    ;
+                if (tail != NULL) {
+                    tmp = tail;
+                    tail = tail->prev;
+                    free(tmp);
+                    if (tail != NULL)
+                        tail->next = NULL;
+                    else
+                        head = NULL;
+                }
+                i += 2;
                 break;
             }
             // For others, fallback to default segment
@@ -96,7 +88,9 @@ void generate_path_nodes(struct path_node **phead, struct path_node **ptail, cha
             for (j = i; path[j] != '/' && path[j] != '\0'; j++)
                 ;
             if (j - i > NAME_MAX) fatal("Name exceeds limits");
+            create_path_node(&head, &tail);
             strncpy(tail->path, path + i, j - i);
+            tail->path[j - i] = '\0';
             i = j;
         }
     }
