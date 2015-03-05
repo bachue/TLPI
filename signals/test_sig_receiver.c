@@ -10,6 +10,7 @@ static volatile sig_atomic_t gotSigint = 0;
 static void
 handler(int sig)
 {
+    printf("sig %d caught\n", sig);
     if (sig == SIGINT)
         gotSigint = 1;
     else
@@ -26,7 +27,7 @@ main(int argc, char *argv[])
 
     struct sigaction action1, action2;
     action1.sa_handler = handler;
-    action1.sa_flags = 0;
+    action1.sa_flags = 0;//SA_NODEFER | SA_RESETHAND;
     action2.sa_handler = SIG_IGN;
     action2.sa_flags = 0;
 
