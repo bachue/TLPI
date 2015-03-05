@@ -24,12 +24,17 @@ main(int argc, char *argv[])
 
     printf("%s: PID is %ld\n", argv[0], (long) getpid());
 
-    struct sigaction action;
-    action.sa_handler = handler;
-    action.sa_flags = 0;
+    struct sigaction action1, action2;
+    action1.sa_handler = handler;
+    action1.sa_flags = 0;
+    action2.sa_handler = SIG_IGN;
+    action2.sa_flags = 0;
 
     for (n = 1; n < NSIG; n++) {         /* Same handler for all signals */
-        sigaction(n, &action, NULL);
+        if (n % 2 == 0)
+            sigaction(n, &action1, NULL);
+        else
+            sigaction(n, &action2, NULL);
     }
 
     /* If a sleep time was specified, temporarily block all signals,
