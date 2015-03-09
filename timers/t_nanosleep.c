@@ -40,6 +40,8 @@ main(int argc, char *argv[])
     if (argc != 3 || strcmp(argv[1], "--help") == 0)
         usageErr("%s secs nanosecs\n", argv[0]);
 
+    printf("%s: PID: %d\n", argv[0], getpid());
+
     request.tv_sec = getLong(argv[1], 0, "secs");
     request.tv_nsec = getLong(argv[2], 0, "nanosecs");
 
