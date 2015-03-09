@@ -5,7 +5,7 @@ GEN_EXE = acct_on acct_view child_status closeonexec envargs exit_handlers \
 	fork_stdio_buf fork_whos_on_first \
 	make_zombie multi_SIGCHLD multi_wait necho orphan \
 	t_execl t_execle t_execve t_execlp t_fork t_system \
-	t_vfork vfork_fd_test test_vfork_fd
+	t_vfork vfork_fd_test test_vfork_fd test_child_exit
 
 LINUX_EXE = demo_clone t_clone acct_v3_view
 
