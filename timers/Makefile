@@ -1,7 +1,7 @@
 include ../Makefile.inc
 
 GEN_EXE = ptmr_null_evp ptmr_sigev_signal ptmr_sigev_thread \
-	real_timer t_nanosleep timed_read test_alarm test_setitimer test_clock_nanosleep
+	real_timer t_nanosleep timed_read test_alarm test_setitimer test_clock_nanosleep test_ptmr_sigev_signal_2
 
 LINUX_EXE = demo_timerfd t_clock_nanosleep
 
