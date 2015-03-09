@@ -1,4 +1,5 @@
 #include <time.h>
+#include <sys/time.h>
 #include <signal.h>
 #include "tlpi_hdr.h"
 
@@ -10,6 +11,17 @@ static void sigHandler(int signum) {
     size = strlen(buf);
     if (write(STDOUT_FILENO, buf, size) == -1)
         write(STDERR_FILENO, buf, size);
+}
+
+static unsigned my_alarm(unsigned seconds) {
+    struct itimerval newval, oldval;
+    newval.it_value.tv_sec = (time_t) seconds;
+    newval.it_value.tv_usec = 0;
+    newval.it_interval.tv_sec = 0;
+    newval.it_interval.tv_usec = 0;
+    if (setitimer(ITIMER_REAL, &newval, &oldval) == -1)
+        errExit("setitimer error");
+    return (unsigned) oldval.it_value.tv_sec;
 }
 
 int main(int argc, char  *argv[]) {
@@ -29,7 +41,7 @@ int main(int argc, char  *argv[]) {
     sa.sa_flags = 0;
     if (sigaction(SIGALRM, &sa, NULL) == -1)
         errExit("sigaction error");
-    alarm(1);
+    my_alarm(1);
     for (;;) {
         if (sigsuspend(&emptyMask) == -1 && errno != EINTR)
             errExit("sigsuspend issue");
