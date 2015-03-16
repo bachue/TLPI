@@ -7,7 +7,7 @@ GEN_EXE = detached_attrib one_time_init prod_condvar prod_no_condvar \
 	thread_incr_rwlock thread_incr_spinlock \
 	thread_lock_speed \
 	thread_multijoin test_join_self test_thread_incr test_mutex_attr \
-	test_basename_dirname test_pthread_sig
+	test_basename_dirname test_pthread_sig test_pthread_fork_chld
 
 LINUX_EXE = strerror_test_tls
 
