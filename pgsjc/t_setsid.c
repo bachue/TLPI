@@ -27,6 +27,10 @@ main(int argc, char *argv[])
     if (fork() != 0)            /* Exit if parent, or on error */
         _exit(EXIT_SUCCESS);
 
+    if (open("/dev/tty", O_RDWR) == -1)
+        errExit("open /dev/tty");
+    printf("/dev/tty opened, no problem\n");
+
     if (setsid() == -1)
         errExit("setsid");
 
@@ -37,5 +41,6 @@ main(int argc, char *argv[])
 
     if (open("/dev/tty", O_RDWR) == -1)
         errExit("open /dev/tty");
+    printf("/dev/tty opened, it's impossible\n");
     exit(EXIT_SUCCESS);
 }
