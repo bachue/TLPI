@@ -31,6 +31,9 @@ main(int argc, char *argv[])
         errExit("open /dev/tty");
     printf("/dev/tty opened, no problem\n");
 
+    printf("PID=%ld, PGID=%ld, SID=%ld\n", (long) getpid(),
+            (long) getpgrp(), (long) getsid(0));
+
     if (setsid() == -1)
         errExit("setsid");
 
