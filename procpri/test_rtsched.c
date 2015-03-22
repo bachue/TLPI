@@ -36,7 +36,7 @@ int main(int argc, char  *argv[]) {
         if (sched_setscheduler(pid, policy, &sp) == -1)
             errExit("sched_setscheduler error");
         if (waitpid(pid, 0, NULL) == -1)
-            errExit("waitpid error");
+            errExit("sched_setscheduler error");
     }
 
     exit(EXIT_SUCCESS);
