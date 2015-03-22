@@ -2,7 +2,8 @@ include ../Makefile.inc
 
 GEN_EXE = sched_set sched_view t_setpriority 
 
-LINUX_EXE = demo_sched_fifo t_sched_setaffinity t_sched_getaffinity test_my_nice
+LINUX_EXE = demo_sched_fifo t_sched_setaffinity t_sched_getaffinity \
+			test_my_nice test_rtsched
 
 EXE = ${GEN_EXE} ${LINUX_EXE}
 
