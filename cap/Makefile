@@ -2,7 +2,7 @@ include ../Makefile.inc
 
 GEN_EXE =
 
-LINUX_EXE = check_password_caps test_cap
+LINUX_EXE = check_password_caps test_cap get_cap
 
 EXE = ${GEN_EXE} ${LINUX_EXE}
 
