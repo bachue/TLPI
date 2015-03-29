@@ -24,7 +24,5 @@ int main()
      printf("Cap data 0x%x, 0x%x, 0x%x\n", cap_data->effective,
          cap_data->permitted, cap_data->inheritable);
 
-     sleep(60);
-
      return 0;
 }
