@@ -29,6 +29,8 @@ main(int argc, char *argv[])
     struct lastlog llog;
     int fd, j;
     uid_t uid;
+    char *lt;
+    time_t t;
 
     if (argc > 1 && strcmp(argv[1], "--help") == 0)
         usageErr("%s [username...]\n", argv[0]);
@@ -52,8 +54,13 @@ main(int argc, char *argv[])
             continue;
         }
 
+        t = (time_t) llog.ll_time;
+        lt = ctime(&t);
+        if (lt == NULL)
+            errExit("ctime error");
+
         printf("%-8.8s %-6.6s %-20.20s %s", argv[j], llog.ll_line,
-                llog.ll_host, ctime((time_t *) &llog.ll_time));
+                llog.ll_host, lt);
     }
 
     close(fd);
