@@ -2,7 +2,7 @@ include ../Makefile.inc
 
 GEN_EXE =
 
-LINUX_EXE = dump_utmpx utmpx_login view_lastlog test_getlogin
+LINUX_EXE = dump_utmpx utmpx_login view_lastlog test_getlogin test_utmpx_login2
 
 EXE = ${GEN_EXE} ${LINUX_EXE}
 
