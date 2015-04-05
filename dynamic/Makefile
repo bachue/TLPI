@@ -5,7 +5,7 @@ SRC = mod1.c mod2.c mod3.c
 libmod.so: ${SRC}
 	${CC} -g -fPIC ${CFLAGS} -Wl,-Bsymbolic,-soname,libmod.so.1 ${SRC} -shared -o libmod.so.1.0.1
 	ldconfig -nv .
-	ln -s libmod.so.1 libmod.so
+	ln -sf libmod.so.1 libmod.so
 
 main.o: main.c
 	${CC} -c main.c ${CFLAGS}
