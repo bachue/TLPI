@@ -6,15 +6,18 @@ static void clear(void);
 static void remove_msgkey(void);
 static void delete_id_file(void);
 static void log_err_exit(char*);
+static int daemonize(void);
 
 static int server_id;
 
 void termsig_handler(int sig) {
+    syslog(LOG_INFO, "signal %s caught, ready to terminate", strsignal(sig));
     clear();
     _exit(EXIT_SUCCESS);
 }
 
 void clear() {
+    syslog(LOG_INFO, "ready to clear runtime environment");
     remove_msgkey();
     delete_id_file();
     closelog();
@@ -34,6 +37,43 @@ void log_err_exit(char *log) {
     strerr[1023] = '\0';
     syslog(LOG_ERR, "[%s] %s", strerr, log);
     errExit(log);
+}
+
+int daemonize() {
+    int maxfd, fd;
+
+    switch (fork()) {
+    case -1: log_err_exit("fork error");
+    case 0: break;
+    default: _exit(EXIT_SUCCESS);
+    }
+
+    if (setsid() == -1) return -1;
+
+    switch (fork()) {
+    case -1: log_err_exit("fork error");
+    case 0: break;
+    default: _exit(EXIT_SUCCESS);
+    }
+
+    umask(0);
+    chdir("/");
+
+    maxfd = sysconf(_SC_OPEN_MAX);
+    if (maxfd == -1) maxfd = 8192;
+
+    for (fd = 0; fd < maxfd; fd++)
+        close(fd);
+
+    close(STDIN_FILENO);
+    fd = open("/dev/null", O_RDWR);
+    if (fd != STDIN_FILENO)
+        return -1;
+    if (dup2(STDIN_FILENO, STDOUT_FILENO) != STDOUT_FILENO)
+        return -1;
+    if (dup2(STDIN_FILENO, STDERR_FILENO) != STDERR_FILENO)
+        return -1;
+    return 0;
 }
 
 int main(int argc, char const *argv[])
@@ -69,6 +109,9 @@ int main(int argc, char const *argv[])
     syslog(LOG_DEBUG, "write into %s, server_id = %d", ID_PATH, server_id);
     if (close(svr_id_fd) == -1)
         log_err_exit("close server id error");
+
+    if (daemonize() == -1)
+        log_err_exit("daemonize error");
 
     for (seqnum = 0; ; seqnum++) {
         syslog(LOG_DEBUG, "waiting for queue %d, type = %d", server_id, 1);
