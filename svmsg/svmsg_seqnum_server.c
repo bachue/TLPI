@@ -5,7 +5,7 @@ static int server_id;
 static void remove_msgkey(void)
 {
     if (msgctl(server_id, IPC_RMID, NULL) == -1)
-        errExit("msgctl");
+        errExit("remove msgqueue error");
 }
 
 int main(int argc, char const *argv[])
@@ -20,10 +20,11 @@ int main(int argc, char const *argv[])
         errExit("msgget failed");
 
     for (seqnum = 0; ; seqnum++) {
-        if (msgrcv(server_id, &req, sizeof(req), 0, 0) == -1)
+        if (msgrcv(server_id, &req, sizeof(req), 1, 0) == -1)
             errExit("msgrcv error");
+        resp.mtype = req.client_id;
         resp.seqnum = seqnum;
-        if (msgsnd(req.client_id, &resp, sizeof(resp), 0) == -1)
+        if (msgsnd(server_id, &resp, sizeof(resp), 0) == -1)
             errExit("msgsnd error");
     }
     exit(EXIT_SUCCESS);

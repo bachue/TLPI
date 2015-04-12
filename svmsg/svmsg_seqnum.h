@@ -6,11 +6,11 @@
 #define SERVER_KEY 0x2aabbaa2           /* Key for server's message queue */
 
 struct request_msg {                    /* Requests (client to server) */
-    long mtype;                         /* Unused */
-    int  client_id;                     /* ID of client's message queue */
+    long mtype;                         /* Should be 1 */
+    long client_id;                     /* Identify of the Client */
 };
 
 struct response_msg {                   /* Responses (server to client) */
-    long mtype;                         /* Unused */
+    long mtype;                         /* Should be client_id */
     unsigned long seqnum;               /* Sequence number / response message */
 };
