@@ -1,6 +1,8 @@
 #include <sys/types.h>
 #include <sys/msg.h>
 #include <sys/stat.h>
+#include <fcntl.h>
+#include <syslog.h>
 #include "tlpi_hdr.h"
 
 #define ID_PATH "/var/run/svmsg_seqnum.id"
