@@ -3,7 +3,7 @@
 #include <sys/stat.h>
 #include "tlpi_hdr.h"
 
-#define SERVER_KEY 0x2aabbaa2           /* Key for server's message queue */
+#define ID_PATH "/var/run/svmsg_seqnum.id"
 
 struct request_msg {                    /* Requests (client to server) */
     long mtype;                         /* Should be 1 */
