@@ -1,6 +1,6 @@
 include ../Makefile.inc
 
-GEN_EXE = svsem_create svsem_demo svsem_mon svsem_op svsem_rm svsem_setall 
+GEN_EXE = svsem_create svsem_demo svsem_mon svsem_op svsem_rm svsem_setall test_fork_sync
 
 LINUX_EXE = svsem_info
 
