@@ -1,6 +1,6 @@
 include ../Makefile.inc
 
-GEN_EXE = anon_mmap mmcat mmcopy t_mmap
+GEN_EXE = anon_mmap mmcat mmcopy t_mmap test_sync
 
 LINUX_EXE = t_remap_file_pages
 
@@ -10,7 +10,7 @@ all : ${EXE}
 
 allgen : ${GEN_EXE}
 
-clean : 
+clean :
 	${RM} ${EXE} *.o
 
 showall :
