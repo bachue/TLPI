@@ -1,6 +1,6 @@
 include ../Makefile.inc
 
-GEN_EXE = anon_mmap mmcat mmcopy t_mmap test_sync test_memory_share_reader test_memory_share_writer
+GEN_EXE = anon_mmap mmcat mmcopy t_mmap test_sync test_memory_share_reader test_memory_share_writer test_out_of_file
 
 LINUX_EXE = t_remap_file_pages
 
