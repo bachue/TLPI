@@ -2,7 +2,8 @@ include ../Makefile.inc
 
 GEN_EXE = mq_notify_sig mq_notify_sigwaitinfo mq_notify_thread \
 	  mq_notify_via_signal mq_notify_via_thread \
-	  pmsg_create pmsg_getattr pmsg_receive pmsg_send pmsg_unlink
+	  pmsg_create pmsg_getattr pmsg_receive pmsg_send pmsg_unlink \
+	  test_pmsg_timedreceive
 
 LINUX_EXE =
 
@@ -13,10 +14,10 @@ all : ${EXE}
 allgen : ${GEN_EXE}
 
 LDLIBS = ${IMPL_LDLIBS} ${LINUX_LIBRT}
-	# All of the programs in this directory need the 
+	# All of the programs in this directory need the
 	# realtime library, librt.
 
-clean : 
+clean :
 	${RM} ${EXE} *.o
 
 showall :
