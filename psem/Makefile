@@ -2,7 +2,7 @@ include ../Makefile.inc
 
 GEN_EXE = psem_getvalue psem_create psem_post psem_unlink \
 	  psem_timedwait psem_trywait psem_wait thread_incr_psem \
-	  test_psem_xfr
+	  test_psem_xfr test_perf
 
 LINUX_EXE =
 
