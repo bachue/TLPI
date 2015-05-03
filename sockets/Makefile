@@ -7,7 +7,8 @@ GEN_EXE = i6d_ucase_sv i6d_ucase_cl \
 	socknames t_gethostbyname t_getservbyname \
 	ud_ucase_sv ud_ucase_cl \
 	us_xfr_cl us_xfr_sv us_xfr_v2_cl us_xfr_v2_sv \
-	us_xfr_cl_abstract us_xfr_sv_abstract
+	us_xfr_cl_abstract us_xfr_sv_abstract \
+	udp_seqnum_server udp_seqnum_client
 
 LINUX_EXE = list_host_addresses \
 	scm_cred_recv scm_cred_send scm_rights_recv scm_rights_send \
@@ -38,6 +39,12 @@ us_xfr_v2_sv.o us_xfr_v2_cl.o : us_xfr_v2.h
 ud_ucase_sv.o ud_ucase_cl.o : ud_ucase.h
 
 us_xfr_sv_abstract.o us_xfr_cl_abstract.o : us_xfr_abstract.h
+
+udp_seqnum_server: udp_seqnum_server.c udp_seqnum.c udp_seqnum.h
+	${CC} ${CFLAGS} udp_seqnum.c udp_seqnum_server.c ${LDLIBS} -o udp_seqnum_server
+
+udp_seqnum_client: udp_seqnum_client.c udp_seqnum.c udp_seqnum.h
+	${CC} ${CFLAGS} udp_seqnum.c udp_seqnum_client.c ${LDLIBS} -o udp_seqnum_client
 
 clean :
 	${RM} ${EXE} *.o
