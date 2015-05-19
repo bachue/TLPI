@@ -8,7 +8,8 @@ GEN_EXE = i6d_ucase_sv i6d_ucase_cl \
 	ud_ucase_sv ud_ucase_cl \
 	us_xfr_cl us_xfr_sv us_xfr_v2_cl us_xfr_v2_sv \
 	us_xfr_cl_abstract us_xfr_sv_abstract \
-	udp_seqnum_server udp_seqnum_client
+	udp_seqnum_server udp_seqnum_client \
+	test_getaddrinfo
 
 LINUX_EXE = list_host_addresses \
 	scm_cred_recv scm_cred_send scm_rights_recv scm_rights_send \
