@@ -21,4 +21,4 @@
 #include "unix_sockets.h"       /* Declares our socket functions */
 #include "tlpi_hdr.h"
 
-#define SOCK_PATH "scm_cred"
+#define SOCK_PATH "/scm_cred"
