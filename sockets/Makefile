@@ -10,7 +10,8 @@ GEN_EXE = i6d_ucase_sv i6d_ucase_cl \
 	us_xfr_cl_abstract us_xfr_sv_abstract \
 	udp_seqnum_server udp_seqnum_client \
 	test_getaddrinfo test_keyvalue_sv test_keyvalue_cl \
-	test_pipe test_sendfile test_splice test_tee test_get_ephemeral_port
+	test_pipe test_sendfile test_splice test_tee test_get_ephemeral_port \
+	is_shell_sv is_shell_cl
 
 LINUX_EXE = list_host_addresses \
 	scm_cred_recv scm_cred_send scm_rights_recv scm_rights_send \
