@@ -1,6 +1,6 @@
 include ../Makefile.inc
 
-GEN_EXE = demo_SIGWINCH new_intr no_echo test_tty_functions 
+GEN_EXE = demo_SIGWINCH new_intr no_echo test_tty_functions test_getpass
 
 EXE = ${GEN_EXE} ${LINUX_EXE}
 
@@ -8,7 +8,7 @@ all : ${EXE}
 
 allgen : ${GEN_EXE}
 
-clean : 
+clean :
 	${RM} ${EXE} *.o
 
 showall :
