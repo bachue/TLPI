@@ -1,6 +1,6 @@
 include ../Makefile.inc
 
-GEN_EXE = demo_sigio poll_pipes select_mq self_pipe t_select
+GEN_EXE = demo_sigio poll_pipes select_mq self_pipe t_select select_pipes
 
 LINUX_EXE = epoll_input
 
@@ -10,7 +10,7 @@ all : ${EXE}
 
 allgen : ${GEN_EXE}
 
-clean : 
+clean :
 	${RM} ${EXE} *.o
 
 showall :
