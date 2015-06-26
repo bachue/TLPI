@@ -1,6 +1,6 @@
 include ../Makefile.inc
 
-GEN_EXE = demo_SIGWINCH new_intr no_echo test_tty_functions test_getpass
+GEN_EXE = demo_SIGWINCH new_intr no_echo test_tty_functions test_getpass devid
 
 EXE = ${GEN_EXE} ${LINUX_EXE}
 
