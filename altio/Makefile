@@ -1,6 +1,6 @@
 include ../Makefile.inc
 
-GEN_EXE = demo_sigio poll_pipes select_mq self_pipe t_select select_pipes
+GEN_EXE = demo_sigio poll_pipes select_mq self_pipe self_poll_pipe t_select select_pipes
 
 LINUX_EXE = epoll_input is_id_echo_sv
 
