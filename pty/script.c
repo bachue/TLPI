@@ -25,30 +25,47 @@
 #include "pty_fork.h"           /* Declaration of ptyFork() */
 #include "tty_functions.h"      /* Declaration of ttySetRaw() */
 #include "tlpi_hdr.h"
+#include <time.h>
 
 #define BUF_SIZE 256
 #define MAX_SNAME 1000
 
-struct termios ttyOrig;
+static struct termios ttyOrig;
+static int scriptFd;
+static char *scriptPath;
+
+static void gettime(struct tm *t) {
+    time_t rawtime;
+    time(&rawtime);
+    localtime_r(&rawtime, t);
+}
 
 static void             /* Reset terminal mode on program exit */
 ttyReset(void)
 {
+    char buf[BUF_SIZE];
+    struct tm endtime;
     if (tcsetattr(STDIN_FILENO, TCSANOW, &ttyOrig) == -1)
         errExit("tcsetattr");
+    printf("Script done, file is %s\n", scriptPath);
+    gettime(&endtime);
+    strftime(buf, BUF_SIZE, "%a %b %d %H:%M:%S %Y", &endtime);
+    dprintf(scriptFd, "Script done on %s\n", buf);
+    if (close(scriptFd) == -1)
+        errExit("close");
 }
 
 int
 main(int argc, char *argv[])
 {
     char slaveName[MAX_SNAME];
-    char *shell;
-    int masterFd, scriptFd;
+    char *shell, buf[BUF_SIZE];
+    int masterFd;
     struct winsize ws;
     fd_set inFds;
-    char buf[BUF_SIZE];
     ssize_t numRead;
     pid_t childPid;
+    struct tm begtime;
 
     /* Retrieve the attributes of terminal on which we are started */
 
@@ -80,8 +97,8 @@ main(int argc, char *argv[])
 
     /* Parent: relay data between terminal and pty master */
 
-    scriptFd = open((argc > 1) ? argv[1] : "typescript",
-                        O_WRONLY | O_CREAT | O_TRUNC,
+    scriptPath = (argc > 1) ? argv[1] : "typescript";
+    scriptFd = open(scriptPath, O_WRONLY | O_CREAT | O_TRUNC,
                         S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP |
                                 S_IROTH | S_IWOTH);
     if (scriptFd == -1)
@@ -90,6 +107,11 @@ main(int argc, char *argv[])
     /* Place terminal in raw mode so that we can pass all terminal
      input to the pseudoterminal master untouched */
 
+    printf("Script started, file is %s\n", scriptPath);
+
+    gettime(&begtime);
+    strftime(buf, BUF_SIZE, "%a %b %d %H:%M:%S %Y", &begtime);
+    dprintf(scriptFd, "Script started on %s\n", buf);
     ttySetRaw(STDIN_FILENO, &ttyOrig);
 
     if (atexit(ttyReset) != 0)
