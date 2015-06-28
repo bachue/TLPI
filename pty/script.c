@@ -22,12 +22,13 @@
 #include "tty_functions.h"      /* Declaration of ttySetRaw() */
 #include "tlpi_hdr.h"
 #include <time.h>
+#include <signal.h>
 
 #define BUF_SIZE 256
 #define MAX_SNAME 1000
 
 static struct termios ttyOrig;
-static int scriptFd;
+static int scriptFd, masterFd;
 static char *scriptPath;
 
 static void gettime(struct tm *t) {
@@ -36,9 +37,7 @@ static void gettime(struct tm *t) {
     localtime_r(&rawtime, t);
 }
 
-static void             /* Reset terminal mode on program exit */
-ttyReset(void)
-{
+static void ttyReset(void) {
     char buf[BUF_SIZE];
     struct tm endtime;
     if (tcsetattr(STDIN_FILENO, TCSANOW, &ttyOrig) == -1)
@@ -51,16 +50,30 @@ ttyReset(void)
         errExit("close");
 }
 
+static void sigwinchHandler(int sig) {
+    struct winsize ws;
+    if (ioctl(STDIN_FILENO, TIOCGWINSZ, &ws) < 0)
+        errExit("ioctl-TIOCGWINSZ");
+    if (ioctl(masterFd, TIOCSWINSZ, &ws) < 0)
+        errExit("ioctl-TIOCSWINSZ");
+}
+
 int
 main(int argc, char *argv[])
 {
     char slaveName[MAX_SNAME];
     char *shell, buf[BUF_SIZE];
-    int masterFd;
     struct winsize ws;
     ssize_t numRead;
     pid_t childPid;
     struct tm begtime;
+    struct sigaction sa;
+
+    sigemptyset(&sa.sa_mask);
+    sa.sa_flags = SA_RESTART;
+    sa.sa_handler = sigwinchHandler;
+    if (sigaction(SIGWINCH, &sa, NULL) == -1)
+        errExit("sigaction");
 
     /* Retrieve the attributes of terminal on which we are started */
 
