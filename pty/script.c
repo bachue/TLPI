@@ -18,10 +18,6 @@
 #include <fcntl.h>
 #include <libgen.h>
 #include <termios.h>
-#if ! defined(__hpux)
-/* HP-UX 11 doesn't have this header file */
-#include <sys/select.h>
-#endif
 #include "pty_fork.h"           /* Declaration of ptyFork() */
 #include "tty_functions.h"      /* Declaration of ttySetRaw() */
 #include "tlpi_hdr.h"
@@ -62,7 +58,6 @@ main(int argc, char *argv[])
     char *shell, buf[BUF_SIZE];
     int masterFd;
     struct winsize ws;
-    fd_set inFds;
     ssize_t numRead;
     pid_t childPid;
     struct tm begtime;
@@ -117,29 +112,22 @@ main(int argc, char *argv[])
     if (atexit(ttyReset) != 0)
         errExit("atexit");
 
-    /* Loop monitoring terminal and pty master for input. If the
-       terminal is ready for input, then read some bytes and write
-       them to the pty master. If the pty master is ready for input,
-       then read some bytes and write them to the terminal. */
-
-    for (;;) {
-        FD_ZERO(&inFds);
-        FD_SET(STDIN_FILENO, &inFds);
-        FD_SET(masterFd, &inFds);
-
-        if (select(masterFd + 1, &inFds, NULL, NULL, NULL) == -1)
-            errExit("select");
-
-        if (FD_ISSET(STDIN_FILENO, &inFds)) {   /* stdin --> pty */
+    switch (fork()) {
+    case -1: errExit("fork");
+    case 0:
+        if (close(scriptFd) == -1)
+            errExit("close");
+        for (;;) {
             numRead = read(STDIN_FILENO, buf, BUF_SIZE);
             if (numRead <= 0)
-                exit(EXIT_SUCCESS);
+                _exit(EXIT_SUCCESS);
 
             if (write(masterFd, buf, numRead) != numRead)
                 fatal("partial/failed write (masterFd)");
         }
-
-        if (FD_ISSET(masterFd, &inFds)) {      /* pty --> stdout+file */
+        break;
+    default:
+        for (;;) {
             numRead = read(masterFd, buf, BUF_SIZE);
             if (numRead <= 0)
                 exit(EXIT_SUCCESS);
@@ -149,5 +137,6 @@ main(int argc, char *argv[])
             if (write(scriptFd, buf, numRead) != numRead)
                 fatal("partial/failed write (scriptFd)");
         }
+        break;
     }
 }
